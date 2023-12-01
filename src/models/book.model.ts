@@ -1,21 +1,21 @@
 import { db } from "../utils/db.server";
 import type { Author } from "./author.model"
 
-type BookRead ={
+type BookRead = {
     id: number;
     title: string;
     datePublished: Date;
     isFiction: boolean;
     author: Author;
+    //   authorId: number;
+};
 
-}
-
-type BookWrite ={
-    title:string;
-    datePublished:Date;
-    isFiction:boolean;
-    authorId: number
-}
+type BookWrite = {
+    title: string;
+    datePublished: Date;
+    authorId: number;
+    isFiction: boolean;
+};
 
 //to get all books list
 export const listBooks = async(): Promise<BookRead[]> => {
@@ -60,29 +60,30 @@ export const getBooks = async(id:number): Promise<BookRead | null> => {
 
 //to create a book
 
-export const createBook = async (book:BookWrite); Promise<BookRead> =>{
-    const {title,authorId, dataPublished, isFiction} = book;
-    const parseDate: Date = new Date(dataPublished);
+export const createBook = async (book: BookWrite): Promise<BookRead> => {
+    const { title, authorId, datePublished, isFiction } = book;
+    const parsedDate: Date = new Date(datePublished);
+
     return db.book.create({
-        data:{
+        data: {
             title,
             authorId,
             isFiction,
-            datePublished:parseDate,
+            datePublished: parsedDate,
         },
-        select:{
-            id:true,
-            title:true,
-            isFiction:true,
-            datePublished:true,
-            author:{
-                select:{
-                    id:true,
-                    firstName:true,
-                    lastName:true,
-                }
-            }
-        }
+        select: {
+            id: true,
+            title: true,
+            isFiction: true,
+            datePublished: true,
+            author: {
+            select: {
+                id: true,
+                firstName: true,
+                lastName: true,
+            },
+            },
+        },
     });
 };
 
