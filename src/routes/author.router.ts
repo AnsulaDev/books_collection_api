@@ -1,7 +1,7 @@
 import express,{Request,Response, response} from "express";
 import {body, validationResult} from "express-validator";
 
-import * as AuthorService from "./author.service";
+import * as AuthorService from "../models/author.model";
 
 export const authorRouter = express.Router();
 
